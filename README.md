@@ -1,5 +1,6 @@
 TODO
-[//]: # (# MaPLe: Multi-modal Prompt Learning [CVPR 2023])
+
+# MAIL: Multi-Modal Interactive Agent Layer for Few-Shot UCDR and Beyond [NeurIPS 2025]
 
 [//]: # ()
 [//]: # ()
