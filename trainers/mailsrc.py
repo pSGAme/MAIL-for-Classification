@@ -341,29 +341,23 @@ class MAILSRC_Trainer(TrainerX):
             with autocast():
                 loss_ce, normalized_text_features, zs_clip_text_embeddings, zs_image_embedd, image_ft, \
                 zero_shot_logits, logits = model(image, label)
-                # Calculate the L_SCL_text loss
-                # loss_scl_text = F.l1_loss(normalized_text_features, zs_clip_text_embeddings.cuda(),
-                #                           reduction='mean') * self.cfg.TRAINER.MAILSRC_Trainer.TEXT_LOSS_WEIGHT
-                # # Calculate the L_SCL_image loss
-                # loss_scl_image = F.l1_loss(image_ft, zs_image_embedd.cuda(),
-                #                            reduction='mean') * self.cfg.TRAINER.MAILSRC_Trainer.IMAGE_LOSS_WEIGHT
 
-                # loss_scl_image = (1 - torch.mean(F.cosine_similarity(image_ft, zs_image_embedd.cuda(),
-                #                                                      dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.IMAGE_LOSS_WEIGHT
-                # loss_scl_text = (1 - torch.mean(
-                #     F.cosine_similarity(normalized_text_features, zs_clip_text_embeddings.cuda(),
-                #                         dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.TEXT_LOSS_WEIGHT
+                loss_scl_image = (1 - torch.mean(F.cosine_similarity(image_ft, zs_image_embedd.cuda(),
+                                                                     dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.IMAGE_LOSS_WEIGHT
+                loss_scl_text = (1 - torch.mean(
+                    F.cosine_similarity(normalized_text_features, zs_clip_text_embeddings.cuda(),
+                                        dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.TEXT_LOSS_WEIGHT
 
                 # Now calculate L_SCL_logits
-                # L_SCL_logits = F.kl_div(
-                #     F.log_softmax(logits / 1, dim=1),
-                #     F.log_softmax(zero_shot_logits / 1, dim=1),
-                #     reduction='sum',
-                #     log_target=True
-                # ) * (1 * 1) / logits.numel() * self.cfg.TRAINER.MAILSRC_Trainer.LOGIT_LOSS_WEIGHT
-                # L_SCL = (L_SCL_logits + loss_scl_text + loss_scl_image)
-                # loss = (loss_ce + L_SCL)
-                loss = loss_ce
+                L_SCL_logits = F.kl_div(
+                    F.log_softmax(logits / 1, dim=1),
+                    F.log_softmax(zero_shot_logits / 1, dim=1),
+                    reduction='sum',
+                    log_target=True
+                ) * (1 * 1) / logits.numel() * self.cfg.TRAINER.MAILSRC_Trainer.LOGIT_LOSS_WEIGHT
+                L_SCL = (L_SCL_logits + loss_scl_text + loss_scl_image)
+                loss = (loss_ce + L_SCL)
+                # loss = loss_ce
             optim.zero_grad()
             scaler.scale(loss).backward()
             scaler.step(optim)
@@ -371,27 +365,20 @@ class MAILSRC_Trainer(TrainerX):
         else:
             loss_ce, normalized_text_features, zs_clip_text_embeddings, zs_image_embedd, image_ft, \
             zero_shot_logits, logits = model(image, label)
-            # Calculate the L_SCL_text loss
-            # loss_scl_text = F.l1_loss(normalized_text_features, zs_clip_text_embeddings.cuda(),
-            #                           reduction='mean') * self.cfg.TRAINER.MAILSRC_Trainer.TEXT_LOSS_WEIGHT
-            # # Calculate the L_SCL_image loss
-            # loss_scl_image = F.l1_loss(image_ft, zs_image_embedd.cuda(),
-            #                            reduction='mean') * self.cfg.TRAINER.MAILSRC_Trainer.IMAGE_LOSS_WEIGHT
 
-            # loss_scl_image = (1 - torch.mean(F.cosine_similarity(image_ft, zs_image_embedd.cuda(), dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.IMAGE_LOSS_WEIGHT
-            # loss_scl_text = (1 - torch.mean(F.cosine_similarity(normalized_text_features, zs_clip_text_embeddings.cuda(),
-            #                                                    dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.TEXT_LOSS_WEIGHT
-            #
-            # # Now calculate L_SCL_logits
-            # L_SCL_logits = F.kl_div(
-            #     F.log_softmax(logits / 1, dim=1),
-            #     F.log_softmax(zero_shot_logits / 1, dim=1),
-            #     reduction='sum',
-            #     log_target=True
-            # ) * (1 * 1) / logits.numel() * self.cfg.TRAINER.MAILSRC_Trainer.LOGIT_LOSS_WEIGHT
-            # L_SCL = (L_SCL_logits + loss_scl_text + loss_scl_image)
-            # loss = (loss_ce + L_SCL)
-            loss = loss_ce
+            loss_scl_image = (1 - torch.mean(F.cosine_similarity(image_ft, zs_image_embedd.cuda(), dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.IMAGE_LOSS_WEIGHT
+            loss_scl_text = (1 - torch.mean(F.cosine_similarity(normalized_text_features, zs_clip_text_embeddings.cuda(),
+                                                               dim=1))) * self.cfg.TRAINER.MAILSRC_Trainer.TEXT_LOSS_WEIGHT
+
+            # Now calculate L_SCL_logits
+            L_SCL_logits = F.kl_div(
+                F.log_softmax(logits / 1, dim=1),
+                F.log_softmax(zero_shot_logits / 1, dim=1),
+                reduction='sum',
+                log_target=True
+            ) * (1 * 1) / logits.numel() * self.cfg.TRAINER.MAILSRC_Trainer.LOGIT_LOSS_WEIGHT
+            L_SCL = (L_SCL_logits + loss_scl_text + loss_scl_image)
+            loss = (loss_ce + L_SCL)
             optim.zero_grad()
             loss.backward()
             optim.step()

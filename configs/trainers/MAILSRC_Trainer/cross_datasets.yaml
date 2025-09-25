@@ -31,12 +31,12 @@ MODEL:
 
 TRAINER:
   MAILSRC_Trainer:
-    RANK: 4
+    RANK: 32
     IVLU_START_LAYER: 1
     IVLU_END_LAYER: 12 # end layer of ivlu
     START_LAYER: 1
     END_LAYER: 12
-    PREC: "amp"
+    PREC: "fp16"
     TEXT_LOSS_WEIGHT: 0.0
     IMAGE_LOSS_WEIGHT: 0.0 # this has a great impact to overfit (benefit)
     LOGIT_LOSS_WEIGHT: 0.0 # this should be fixed as 1 forever :）
