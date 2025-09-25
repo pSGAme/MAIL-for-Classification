@@ -37,7 +37,7 @@ import trainers.maple
 import trainers.independentVL
 import trainers.vpt
 from trainers.config import get_dataset_specified_config
-import trainers.mailsrc
+import trainers.mailsrc_dp
 # import trainers.mailsrc_hook
 
 
@@ -57,11 +57,9 @@ def get_prompt(cfg_filname: str) -> tuple:
         pre = "a yummy food photo of a"
     elif cfg_filname.endswith("fgvc_aircraft.yaml"):
         pre = "a brand aircraft of a"
-        #pre = "an awesome brand aircraft of my"  # cross
+        # pre = "an awesome brand aircraft of my"  # cross
     elif cfg_filname.endswith("sun397.yaml"):
-        pre = "an awesome large-scale scene photo of a"
-        # post = "a type of scene."
-        # pre = "a photo of a"  # cross
+        pre = "a scene photo of a"  # cross
     elif cfg_filname.endswith("dtd.yaml"):
         # pre = "a texture photo of a"
         pre = "a beautiful texture drawing of a"

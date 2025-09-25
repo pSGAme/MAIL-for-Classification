@@ -1,6 +1,6 @@
 DATALOADER:
   TRAIN_X:
-    BATCH_SIZE: 64
+    BATCH_SIZE: 16
   TEST:
     BATCH_SIZE: 100
   NUM_WORKERS: 4
@@ -14,9 +14,9 @@ INPUT:
   RRCROP_SCALE: (0.5, 1.0)
 
 OPTIM:
-  NAME: "adamw"
+  NAME: "radam"
   LR: 0.000025
-  MAX_EPOCH: 5
+  MAX_EPOCH: 1
   LR_SCHEDULER: "cosine"
   WARMUP_EPOCH: 0
   WARMUP_TYPE: "linear"
@@ -36,7 +36,7 @@ TRAINER:
     IVLU_END_LAYER: 12 # end layer of ivlu
     START_LAYER: 1
     END_LAYER: 12
-    PREC: "amp"
+    PREC: "fp16"
     TEXT_LOSS_WEIGHT: 0.0
     IMAGE_LOSS_WEIGHT: 0.0 # this has a great impact to overfit (benefit)
     LOGIT_LOSS_WEIGHT: 0.0 # this should be fixed as 1 forever :）

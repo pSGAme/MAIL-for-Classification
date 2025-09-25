@@ -86,9 +86,11 @@ def build_optimizer(model, optim_cfg, param_groups=None):
                 param_groups = model
 
     if optim == "adam":
+        # print("adamadmammamama")
         optimizer = torch.optim.Adam(
             param_groups,
             lr=lr,
+            # eps=1e-6,
             weight_decay=weight_decay,
             betas=(adam_beta1, adam_beta2),
         )
