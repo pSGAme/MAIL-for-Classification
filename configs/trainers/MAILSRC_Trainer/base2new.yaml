@@ -11,11 +11,11 @@ INPUT:
   PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
   PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
   TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
-#  TRANSFORMS: ["randaugment", "normalize"]
+  RRCROP_SCALE: (0.5, 1.0)
 OPTIM:
-  NAME: "sgd"
-  LR: 0.000010
-  MAX_EPOCH: 9
+  NAME: "adamw"
+  LR: 0.000015
+  MAX_EPOCH: 10
   LR_SCHEDULER: "cosine"
   WARMUP_EPOCH: 0
   WARMUP_TYPE: "linear"
@@ -29,6 +29,16 @@ MODEL:
     NAME: "ViT-B/16"
 
 TRAINER:
-  MAIL_Trainer:
-    RANK: 8
+  MAILSRC_Trainer:
+    RANK: 32
+    IVLU_START_LAYER: 1
     IVLU_END_LAYER: 12 # end layer of ivlu
+    START_LAYER: 1
+    END_LAYER: 12
+    PROJ: True
+    PREC: "amp"
+    TEXT_LOSS_WEIGHT: 0.0
+    IMAGE_LOSS_WEIGHT: 0.0
+    LOGIT_LOSS_WEIGHT: 0.0
+
+

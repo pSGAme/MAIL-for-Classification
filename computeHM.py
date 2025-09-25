@@ -78,11 +78,10 @@ def parse_function(*metrics, directory="", args=None, end_signal=None):
 
             for line in lines:
                 line = line.strip()
-
                 if line == end_signal:
                     good_to_go = True
-
                 for metric in metrics:
+
                     match = metric["regex"].search(line)
                     if match and good_to_go:
                         if "file" not in output:
@@ -158,7 +157,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--ci95", action="store_true", help=r"compute 95\% confidence interval"
     )
-    parser.add_argument("--test-log", action="store_true", help="parse test-only logs")
+    parser.add_argument("--test-log", action="store_false", help="parse test-only logs")
     parser.add_argument(
         "--multi-exp", action="store_true", help="parse multiple experiments"
     )
@@ -172,3 +171,9 @@ if __name__ == "__main__":
         end_signal = "=> result"
 
     main(args, end_signal)
+
+# path_base = "output/base2new/train_base/imagenet/shots_16/MAILSRC_Trainer/base2new"
+# path_new = "output/base2new/test_new/${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/"
+
+#
+# python3 parse_test_res.py

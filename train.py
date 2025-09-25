@@ -31,7 +31,7 @@ import trainers.zsclip
 import trainers.maple
 import trainers.independentVL
 import trainers.vpt
-import trainers.mail
+from trainers.config import get_dataset_specified_config
 import trainers.mailsrc
 # import trainers.mailsrc_hook
 
@@ -42,7 +42,7 @@ def get_prompt(cfg_filname: str) -> tuple:
     if cfg_filname.endswith("caltech101.yaml"):
         pre = "a drawing of a"
     elif cfg_filname.endswith("oxford_pets.yaml"):
-        pre = "an animal pet photo of a"
+        pre = "an awesome animal pet photo of a"
     elif cfg_filname.endswith("stanford_cars.yaml"):
         # pre = "an awesome vehicle photo of a"
         pre = "a photo of my"  # cross
@@ -155,22 +155,8 @@ def extend_cfg(cfg, args):
     cfg.TRAINER.COCOOP.PREC = "fp16"  # fp16, fp32, amp
 
     # Config for MAIL
-    cfg.TRAINER.MAIL_Trainer = CN()
-    cfg.TRAINER.MAIL_Trainer.RANK = 8  # rank of the bridge function
-    cfg.TRAINER.MAIL_Trainer.T = 1.0  # the intensity of the initialization
-    cfg.TRAINER.MAIL_Trainer.IVLU_START_LAYER = 1  # start layer of ivlu
-    cfg.TRAINER.MAIL_Trainer.IVLU_END_LAYER = 12  # end layer of ivlu
-    cfg.TRAINER.MAIL_Trainer.START_LAYER = 1
-    cfg.TRAINER.MAIL_Trainer.END_LAYER = 12  # start and the end layers of applying MAIL
-    prefix, postfix = get_prompt(args.dataset_config_file)
-    cfg.TRAINER.MAIL_Trainer.PREFIX_INIT = prefix  # initialization words
-    cfg.TRAINER.MAIL_Trainer.POSTFIX_INIT = postfix  # initialization words
-    cfg.TRAINER.MAIL_Trainer.PREC = "fp16"  # fp16, fp32, amp
-
     cfg.TRAINER.MAILSRC_Trainer = CN()
-    cfg.TRAINER.MAILSRC_Trainer.RANK = 8  # rank of the bridge function
-    cfg.TRAINER.MAILSRC_Trainer.T = 1.0  # the intensity of the initialization
-    cfg.TRAINER.MAILSRC_Trainer.alpha = 0.0  # the intensity of the initialization
+    cfg.TRAINER.MAILSRC_Trainer.RANK = 32  # rank of the bridge function
     cfg.TRAINER.MAILSRC_Trainer.IVLU_START_LAYER = 1  # start layer of ivlu
     cfg.TRAINER.MAILSRC_Trainer.IVLU_END_LAYER = 12  # end layer of ivlu
     cfg.TRAINER.MAILSRC_Trainer.START_LAYER = 1
@@ -183,15 +169,8 @@ def extend_cfg(cfg, args):
     cfg.TRAINER.MAILSRC_Trainer.IMAGE_LOSS_WEIGHT = 0.0
     cfg.TRAINER.MAILSRC_Trainer.LOGIT_LOSS_WEIGHT = 0.0
     cfg.TRAINER.MAILSRC_Trainer.PROJ = True
-    cfg.TRAINER.MAILSRC_Trainer.meta_dim = 512
     cfg.DATASET.SUBSAMPLE_CLASSES = "all"  # all, base or new
 
-    #
-    # cfg.TRAINER.MAPLE.N_CTX = 2  # number of context vectors
-    # cfg.TRAINER.MAPLE.CTX_INIT = "a photo of a"  # initialization words
-    # cfg.TRAINER.MAPLE.PREC = "fp16"  # fp16, fp32, amp
-    # cfg.TRAINER.MAPLE.PROMPT_DEPTH = 9 # Max 12, minimum 0, for 1 it will act as shallow MaPLe (J=1)
-    # cfg.DATASET.SUBSAMPLE_CLASSES = "all"  # all, base or new
 
     # Config for MaPLe
     cfg.TRAINER.MAPLE = CN()
@@ -236,7 +215,10 @@ def setup_cfg(args):
     # 3. From input arguments
     reset_cfg(cfg, args)
 
-    # 4. From optional input arguments
+    # 4. Override dataset specific config
+    cfg.merge_from_list(get_dataset_specified_config(cfg.DATASET.NAME))
+
+    # 5. From optional input arguments
     cfg.merge_from_list(args.opts)
 
     cfg.freeze()

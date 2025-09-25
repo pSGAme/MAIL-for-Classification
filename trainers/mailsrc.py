@@ -1,19 +1,15 @@
-import os.path as osp
-from collections import OrderedDict
-import math
 import copy
-
-import numpy as np
 import torch
+import numpy as np
 import torch.nn as nn
+import os.path as osp
+
 from torch.nn import functional as F
 from torch.cuda.amp import GradScaler, autocast
-
 from dassl.engine import TRAINER_REGISTRY, TrainerX
 from dassl.metrics import compute_accuracy
 from dassl.utils import load_pretrained_weights, load_checkpoint
 from dassl.optim import build_optimizer, build_lr_scheduler
-
 from clip_mail import clip
 from clip import clip as clip_zs
 from clip.simple_tokenizer import SimpleTokenizer as _Tokenizer
@@ -70,11 +66,9 @@ class MAIL(nn.Module):
         rank = self.cfg.TRAINER.MAILSRC_Trainer.RANK
         visual_scale = visual_dim ** -0.5
         text_scale = text_dim ** -0.5
-        t = self.cfg.TRAINER.MAILSRC_Trainer.T
-
         #
         # gaussian - 0 distribution
-        self.text_proj_down = nn.Parameter(text_scale * t * torch.randn(text_dim, rank))
+        self.text_proj_down = nn.Parameter(text_scale * 1 * torch.randn(text_dim, rank))
         self.text_proj_up = nn.Parameter(visual_scale * 0 * torch.randn(rank, visual_dim))
 
     def forward(self, x, is_text, i=0):
@@ -98,7 +92,7 @@ class MAIL(nn.Module):
 
     def text_forward(self, x, i):
         a = self.text_a
-        b = self.text_b  # + self.visual_b @ self.visual_proj_down_bias  @ self.visual_proj_up_bias
+        b = self.text_b
         x = x * a + b
         return x
 

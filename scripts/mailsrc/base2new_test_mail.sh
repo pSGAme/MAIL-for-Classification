@@ -10,11 +10,15 @@ TRAINER=MAILSRC_Trainer
 DATASET=$1
 SEED=$2
 
-CFG=vit_b16_c2_ep5_batch4_2ctx_adam
+CFG=base2new
 SHOTS=16
 LOADEP=10
 SUB=new
 
+echo "$DATASET"
+if [ $DATASET = imagenet ]; then
+  LOADEP=5
+fi
 
 COMMON_DIR=${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
 MODEL_DIR=output/base2new/train_base/${COMMON_DIR}

@@ -10,7 +10,7 @@ TRAINER=MAILSRC_Trainer
 DATASET=$1
 SEED=$2
 
-CFG=vit_b16_c2_ep5_batch4_2ctx_adam
+CFG=base2new
 SHOTS=16
 
 

@@ -3,18 +3,24 @@
 #cd ../..
 
 # custom config
-DATA="/path/to/dataset/folder"
-TRAINER=MaPLe
+DATA="/data/Classification/"
+TRAINER=MAILSRC_Trainer
 
 DATASET=$1
+
 SEED=$2
+
 WEIGHTSPATH=$3
 
-CFG=vit_b16_c2_ep5_batch4_2ctx
+CFG=base2new
 SHOTS=16
-LOADEP=5
-SUB_base=base
-SUB_novel=new
+LOADEP=10
+
+echo "$DATASET"
+if [ $DATASET = imagenet ]; then
+  LOADEP=5
+fi
+
 
 COMMON_DIR=${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/seed${SEED}
 MODEL_DIR=${WEIGHTSPATH}/base/seed${SEED}
@@ -37,7 +43,7 @@ else
     --load-epoch ${LOADEP} \
     --eval-only \
     DATASET.NUM_SHOTS ${SHOTS} \
-    DATASET.SUBSAMPLE_CLASSES ${SUB_base}
+    DATASET.SUBSAMPLE_CLASSES base
 
     # Evaluate on novel classes
     python train.py \
@@ -51,7 +57,7 @@ else
     --load-epoch ${LOADEP} \
     --eval-only \
     DATASET.NUM_SHOTS ${SHOTS} \
-    DATASET.SUBSAMPLE_CLASSES ${SUB_novel}
+    DATASET.SUBSAMPLE_CLASSES new
 
 
 
