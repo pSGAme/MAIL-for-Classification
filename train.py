@@ -213,11 +213,13 @@ def setup_cfg(args):
     # 3. From input arguments
     reset_cfg(cfg, args)
 
-    # 4. Override dataset specific config
-    cfg.merge_from_list(get_dataset_specified_config(cfg.DATASET.NAME))
 
-    # 5. From optional input arguments
+    # 4. From optional input arguments
     cfg.merge_from_list(args.opts)
+
+    # 5. Override dataset specific config
+    if cfg.DATASET.SUBSAMPLE_CLASSES != "all":
+        cfg.merge_from_list(get_dataset_specified_config(cfg.DATASET.NAME))
 
     cfg.freeze()
 

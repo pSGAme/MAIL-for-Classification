@@ -5,9 +5,6 @@ RANK: 32 for all datasets, except for dtd (12).
 RRCROP_SCALE: (0.5, 1.0) for all datasets, except for stanford_cars (0.45, 1.0).
 Optimizer: AdamW for all datasets, except for EuroSAT, we find that SGD for EuroSAT is much better.
 """
-
-
-
 def get_dataset_specified_config(dataset):
     """Get dataset specific."""
     cfg = {
