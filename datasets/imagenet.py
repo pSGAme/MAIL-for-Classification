@@ -26,7 +26,6 @@ class ImageNet(DatasetBase):
                 preprocessed = pickle.load(f)
                 train = preprocessed["train"]
                 test = preprocessed["test"]
-                print("what the fuck")
         else:
             text_file = os.path.join(self.dataset_dir, "classnames.txt")
             classnames = self.read_classnames(text_file)
@@ -59,6 +58,7 @@ class ImageNet(DatasetBase):
                     pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
 
         subsample = cfg.DATASET.SUBSAMPLE_CLASSES
+        print("subsample:", subsample)
         train, test = OxfordPets.subsample_classes(train, test, subsample=subsample)
         print("dataset config:")
         print("train_length:", len(train))

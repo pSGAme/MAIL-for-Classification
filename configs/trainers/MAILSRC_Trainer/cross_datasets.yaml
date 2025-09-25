@@ -12,6 +12,7 @@ INPUT:
   PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
   TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
   RRCROP_SCALE: (0.5, 1.0)
+
 OPTIM:
   NAME: "sgd"
   LR: 0.000015
@@ -30,14 +31,12 @@ MODEL:
 
 TRAINER:
   MAILSRC_Trainer:
-    RANK: 36
+    RANK: 4
     IVLU_START_LAYER: 1
     IVLU_END_LAYER: 12 # end layer of ivlu
     START_LAYER: 1
     END_LAYER: 12
-    PREC: "fp16"
-    T: 1.0
-    alpha: 0.0
+    PREC: "amp"
     TEXT_LOSS_WEIGHT: 0.0
     IMAGE_LOSS_WEIGHT: 0.0 # this has a great impact to overfit (benefit)
     LOGIT_LOSS_WEIGHT: 0.0 # this should be fixed as 1 forever :）

@@ -44,17 +44,12 @@ def get_prompt(cfg_filname: str) -> tuple:
     elif cfg_filname.endswith("oxford_pets.yaml"):
         pre = "an awesome animal pet photo of a"
     elif cfg_filname.endswith("stanford_cars.yaml"):
-        # pre = "an awesome vehicle photo of a"
         pre = "a photo of my"  # cross
     elif cfg_filname.endswith("oxford_flowers.yaml"):
-        # pre = "a photo of a"
-        # post = "a type of beautiful flower."
         pre = "a flower photo of a"
         # pre = "a beautiful flower photo of a" # cross`Cc
     elif cfg_filname.endswith("food101.yaml"):
         pre = "a yummy food photo of a"
-        # pre = "a photo of a"
-        # post = "a type of yummy food."
     elif cfg_filname.endswith("fgvc_aircraft.yaml"):
         pre = "a brand aircraft of a"
         #pre = "an awesome brand aircraft of my"  # cross
@@ -65,10 +60,8 @@ def get_prompt(cfg_filname: str) -> tuple:
     elif cfg_filname.endswith("dtd.yaml"):
         # pre = "a texture photo of a"
         pre = "a beautiful texture drawing of a"
-        #post = "texture."
-       # post = "texture."  # cross
+        # post = "texture."  # cross
     elif cfg_filname.endswith("eurosat.yaml"):
-        # pre = "a centered satellite photo of"
         pre = "a photo of a"
         post = ", a type of centered satellite"
     elif cfg_filname.endswith("ucf101.yaml"):

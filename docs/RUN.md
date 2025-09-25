@@ -19,99 +19,13 @@ Below, we provide instructions to train MaPLe on imagenet.
 ```bash
 # Other possible dataset values includes [caltech101, food101, dtd, ucf101, oxford_flowers, oxford_pets, fgvc_aircraft, stanford_cars, sun397, eurosat]
 
-# seed=1
-# trains and evaluates on base classes
-bash scripts/mailsrc/base2new_train_mail.sh imagenet 1
-# evaluates on novel classes
-bash scripts/mailsrc/base2new_test_mail.sh imagenet 1
-
-# seed=2
-# trains and evaluates on base classes
-bash scripts/maple/base2new_train_maple.sh imagenet 2
-# evaluates on novel classes
-bash scripts/maple/base2new_test_maple.sh imagenet 2
-
-# seed=3
-# trains and evaluates on base classes
-bash scripts/maple/base2new_train_maple.sh imagenet 3
-# evaluates on novel classes
-bash scripts/maple/base2new_test_maple.sh imagenet 3
-```
-
-#### Averaging results over 3 seeds: 
-Once the above trainings and evaluations are completed, the `output/` directory should have the following structure:
-
-```
-output
-|–– base2new/
-|   |–– test_new/
-|   |   |–– imagenet/
-|   |   |   |–– shots_16/
-|   |   |   |   |–– MaPLe/
-|   |   |   |   |   |–– vit_b16_c2_ep5_batch4_2ctx/
-|   |   |   |   |   |   |–– seed1/
-|   |   |   |   |   |   |–– seed2/
-|   |   |   |   |   |   |–– seed3/
-|   |–– train_base/
-|   |   |–– imagenet/
-|   |   |   |–– shots_16/
-|   |   |   |   |–– MaPLe/
-|   |   |   |   |   |–– vit_b16_c2_ep5_batch4_2ctx/
-|   |   |   |   |   |   |–– seed1/
-|   |   |   |   |   |   |–– seed2/
-|   |   |   |   |   |   |–– seed3/
-```
-
-Now use the script `parse_test_res.py` and run the commands below to calculate the averaged results:
-```bash
-# prints averaged results for base classes
-python parse_test_res.py output/base2new/train_base/imagenet/shots_16/MaPLe/vit_b16_c2_ep5_batch4_2ctx
-# averaged results for novel classes
-python parse_test_res.py output/base2new/test_new/imagenet/shots_16/MaPLe/vit_b16_c2_ep5_batch4_2ctx --test-log
-```
-
-The above steps can be repeated for other individual datasets.
-
-#### Reproducing results using pre-trained weights for base-to-novel generalization setting
-
-We show an example to reproduce results for imagenet. Follow the instructions below to reproduce results using our pre-trained model weights:
-* Download the zipped folder containing pre-trained weights for a single dataset from this [link](https://drive.google.com/drive/folders/1-tB6BUDBzs9CXTOJ7p5hM4Svq1tL_mGz?usp=sharing). Additionally we also provide the log files for both training and evaluation. After unzipping, the directory should look like this:
-
-```
-imagenet
-|–– base/
-|   |–– seed1/
-|   |–– seed2/
-|   |–– seed3/
-|–– novel/
-|   |–– seed1/
-|   |–– seed2/
-|   |–– seed3/
-```
-
-Now use the evaluation script `scripts/maple/reproduce_maple.sh` and run the commands below to calculate the averaged results:
-```bash
-# evaluate on base and novel classes for SEED1
-bash scripts/maple/reproduce_maple.sh imagenet 1 /path/to/imagenet/weights/folder
-# evaluate on base and novel classes for SEED2
-bash scripts/maple/reproduce_maple.sh imagenet 2 /path/to/imagenet/weights/folder
-# evaluate on base and novel classes for SEED3
-bash scripts/maple/reproduce_maple.sh imagenet 3 /path/to/imagenet/weights/folder
-```
-
-This should evaluate and save the log files in `output/` directory. To obtain the averaged results, run:
-
-```bash
-# prints averaged results for base classes
-python parse_test_res.py output/base2new/train_base/imagenet/shots_16/MaPLe/vit_b16_c2_ep5_batch4_2ctx
-# averaged results for novel classes
-python parse_test_res.py output/base2new/test_new/imagenet/shots_16/MaPLe/vit_b16_c2_ep5_batch4_2ctx --test-log
+bash scripts/mailsrc/base2new_mail.sh imagenet
 ```
 
 
 #### (2) Cross-Dataset Transfer
-We provide instructions to train MaPLe on imageNet using all 1000 classes and then evaluating it directly on new downstream datasets.
-We provide cross-dataset config for MaPLe: `configs/MaPLe/vit_b16_c2_ep5_batch4_2ctx_cross_datasets.yaml`.
+We provide instructions to train MAIL on imageNet using all 1000 classes and then evaluating it directly on new downstream datasets.
+We provide cross-dataset config for MAIL: `configs/MaPLe/vit_b16_c2_ep5_batch4_2ctx_cross_datasets.yaml`.
 * Firstly, train MaPLe on imagenet in few-shot manner (for all 3 seeds).
 
 ```bash

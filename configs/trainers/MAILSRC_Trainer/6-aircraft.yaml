@@ -1,5 +1,3 @@
-
-
 DATALOADER:
   TRAIN_X:
     BATCH_SIZE: 4
