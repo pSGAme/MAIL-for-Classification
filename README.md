@@ -1,6 +1,10 @@
-TODO
-
 # MAIL: Multi-Modal Interactive Agent Layer for Few-Shot UCDR and Beyond [NeurIPS 2025]
+> Official github repository for MAIL: **Multi-Modal Interactive Agent Layer for Few-Shot Universal Cross-Domain Retrieval and Beyond**
+
+> Please note this repo is specifically for **few-shot classification**. Before you run this repo, please prepare the environment and install the datasets following the
+> guidance in [MaPle](https://github.com/muzairkhattak/multimodal-prompt-learning).
+
+> This repo is also forked from [MaPle](https://github.com/muzairkhattak/multimodal-prompt-learning).
 
 [//]: # ()
 [//]: # ()

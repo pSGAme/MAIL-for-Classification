@@ -1,18 +1,18 @@
 # Installation
 
-This codebase is tested on Ubuntu 20.04.2 LTS with python 3.8. Follow the below steps to create environment and install dependencies.
+This codebase is tested on Ubuntu 22.04.4 LTS with python 3.10.4. Follow the below steps to create environment and install dependencies.
 
 * Setup conda environment (recommended).
 ```bash
 # Create a conda environment
-conda create -y -n maple python=3.8
+conda create -y -n mail python=3.10.4
 
 # Activate the environment
-conda activate maple
+conda activate mail
 
 # Install torch (requires version >= 1.8.1) and torchvision
 # Please refer to https://pytorch.org/ if you need a different cuda version
-pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
 * Install dassl library.
@@ -31,12 +31,12 @@ python setup.py develop
 cd ..
 ```
 
-* Clone MaPLe code repository and install requirements
+* Clone MAIL code repository and install requirements
 ```bash
 # Clone MaPLe code base
-git clone https://github.com/muzairkhattak/multimodal-prompt-learning.git
+git clone https://github.com/pSGAme/MAIL-for-Classification.git
 
-cd multimodal-prompt-learning/
+cd MAIL-for-Classification/
 # Install requirements
 
 pip install -r requirements.txt
