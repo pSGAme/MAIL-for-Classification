@@ -37,8 +37,7 @@ import trainers.maple
 import trainers.independentVL
 import trainers.vpt
 from trainers.config import get_dataset_specified_config
-import trainers.mailsrc_dp
-# import trainers.mailsrc_hook
+import trainers.mailsrc
 
 
 def get_prompt(cfg_filname: str) -> tuple:
@@ -57,23 +56,24 @@ def get_prompt(cfg_filname: str) -> tuple:
         pre = "a yummy food photo of a"
     elif cfg_filname.endswith("fgvc_aircraft.yaml"):
         pre = "a brand aircraft of a"
-        # pre = "an awesome brand aircraft of my"  # cross
+        #pre = "an awesome brand aircraft of my"  # cross
     elif cfg_filname.endswith("sun397.yaml"):
         pre = "a scene photo of a"  # cross
     elif cfg_filname.endswith("dtd.yaml"):
         # pre = "a texture photo of a"
         pre = "a beautiful texture drawing of a"
-        # post = "texture."  # cross
+        #post = "texture."  # cross
     elif cfg_filname.endswith("eurosat.yaml"):
+        # pre = "an image of a"
+        # post = ", a type of very centered satellite"
         pre = "a photo of a"
         post = ", a type of centered satellite"
     elif cfg_filname.endswith("ucf101.yaml"):
-        # pre = "a person doing"
         post = "a type of action."
     elif cfg_filname.endswith("imagenet_sketch.yaml"):
         pre = "a sketch photo of a"
     elif cfg_filname.endswith("imagenet_a.yaml"):
-        pre = "a blurry photo of a"
+        pre = "a poor photo of a"
     elif cfg_filname.endswith("imagenet_r.yaml"):
         pre = "a sketch photo of a"
     return pre, post
@@ -216,7 +216,7 @@ def setup_cfg(args):
     cfg.merge_from_list(args.opts)
 
     # 5. Override dataset specific config
-    if cfg.DATASET.SUBSAMPLE_CLASSES != "all":
+    if cfg.DATASET.SUBSAMPLE_CLASSES != "all":  # FOR BASE2NEW
         cfg.merge_from_list(get_dataset_specified_config(cfg.DATASET.NAME))
 
     cfg.freeze()
