@@ -21,10 +21,10 @@ done
 
 echo "Parse Base Results................."
 path_base=output/base2new/train_base/${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/
-python computeHM.py $path_base
+python computeACC.py $path_base
 
 echo "Parse New Results................."
 path_new=output/base2new/test_new/${DATASET}/shots_${SHOTS}/${TRAINER}/${CFG}/
 
-python computeHM.py $path_new
+python computeACC.py $path_new
 
